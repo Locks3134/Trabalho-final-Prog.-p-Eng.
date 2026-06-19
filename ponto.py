@@ -1,3 +1,4 @@
+from datetime import datetime
 import tkinter as tk
 from tkinter import messagebox
 
@@ -35,7 +36,12 @@ def entrada():
 
     for f in funcionarios:
         if f["id"] == id_func:
-            registro = {"entrada": "Agora", "saida": ""}
+
+            hora = datetime.now().strftime("%d/%m/%Y - %H:%M")
+            registro = {
+            "entrada": hora,
+            "saida": ""
+}
             f["pontos"].append(registro)
             messagebox.showinfo("Sucesso", "Entrada registrada!")
             return
@@ -57,7 +63,9 @@ def saida():
                 messagebox.showerror("Erro", "Sem entrada registrada!")
                 return
 
-            f["pontos"][-1]["saida"] = "Agora"
+            agora = datetime.now().strftime("%d/%m/%Y - %H:%M")
+            f["pontos"][-1]["saida"] = agora
+
             messagebox.showinfo("Sucesso", "Saída registrada!")
             return
 
@@ -88,26 +96,66 @@ def historico():
 # ===== INTERFACE =====
 janela = tk.Tk()
 janela.title("Sistema de Ponto")
+janela.configure(bg="#f0f0f0")
+
+# Título
+tk.Label(
+    janela,
+    text="Sistema de Ponto",
+    font=("Arial", 16, "bold"),
+    bg="#f0f0f0"
+).grid(row=0, column=0, columnspan=2, pady=10)
 
 # Nome
-tk.Label(janela, text="Nome:").pack()
-entry_nome = tk.Entry(janela)
-entry_nome.pack()
+tk.Label(janela, text="Nome:", bg="#f0f0f0").grid(row=1, column=0, padx=10, pady=5, sticky="e")
+entry_nome = tk.Entry(janela, width=25)
+entry_nome.grid(row=1, column=1, padx=10, pady=5)
 
-tk.Button(janela, text="Cadastrar Funcionário", command=cadastrar).pack(pady=5)
+# Botão cadastrar
+tk.Button(
+    janela,
+    text="Cadastrar Funcionário",
+    command=cadastrar,
+    bg="#4CAF50",
+    fg="white",
+    width=25
+).grid(row=2, column=0, columnspan=2, pady=10)
 
 # ID
-tk.Label(janela, text="ID do Funcionário:").pack()
-entry_id = tk.Entry(janela)
-entry_id.pack()
+tk.Label(janela, text="ID do Funcionário:", bg="#f0f0f0").grid(row=3, column=0, padx=10, pady=5, sticky="e")
+entry_id = tk.Entry(janela, width=25)
+entry_id.grid(row=3, column=1, padx=10, pady=5)
 
-# Botões
-tk.Button(janela, text="Registrar Entrada", command=entrada).pack(pady=2)
-tk.Button(janela, text="Registrar Saída", command=saida).pack(pady=2)
-tk.Button(janela, text="Ver Histórico", command=historico).pack(pady=5)
+# Botões de ação
+tk.Button(
+    janela,
+    text="Registrar Entrada",
+    command=entrada,
+    bg="#2196F3",
+    fg="white",
+    width=25
+).grid(row=4, column=0, columnspan=2, pady=3)
+
+tk.Button(
+    janela,
+    text="Registrar Saída",
+    command=saida,
+    bg="#f44336",
+    fg="white",
+    width=25
+).grid(row=5, column=0, columnspan=2, pady=3)
+
+tk.Button(
+    janela,
+    text="Ver Histórico",
+    command=historico,
+    bg="#9C27B0",
+    fg="white",
+    width=25
+).grid(row=6, column=0, columnspan=2, pady=10)
 
 # Área de texto
-texto = tk.Text(janela, height=10, width=40)
-texto.pack()
+texto = tk.Text(janela, height=10, width=45)
+texto.grid(row=7, column=0, columnspan=2, padx=10, pady=10)
 
 janela.mainloop()
