@@ -1,9 +1,17 @@
-# Lista para armazenar funcionários
+import tkinter as tk
+from tkinter import messagebox
+
+# Lista de funcionários
 funcionarios = []
 
 # Função para cadastrar funcionário
-def cadastrar_funcionario():
-    nome = input("Digite o nome do funcionário: ")
+def cadastrar():
+    nome = entry_nome.get()
+
+    if nome == "":
+        messagebox.showerror("Erro", "Digite um nome!")
+        return
+
     id_func = len(funcionarios) + 1
 
     funcionario = {
@@ -13,107 +21,93 @@ def cadastrar_funcionario():
     }
 
     funcionarios.append(funcionario)
-    print("Funcionário cadastrado com sucesso!\n")
-
-
-# Função para listar funcionários
-def listar_funcionarios():
-    if len(funcionarios) == 0:
-        print("Nenhum funcionário cadastrado.\n")
-    else:
-        for f in funcionarios:
-            print(f"ID: {f['id']} | Nome: {f['nome']}")
-    print()
+    messagebox.showinfo("Sucesso", f"{nome} cadastrado com ID {id_func}")
+    entry_nome.delete(0, tk.END)
 
 
 # Função para registrar entrada
-def registrar_entrada():
+def entrada():
     try:
-        id_func = int(input("Digite o ID do funcionário: "))
-    except ValueError:
-        print("Erro: Digite apenas números inteiros!\n")
+        id_func = int(entry_id.get())
+    except:
+        messagebox.showerror("Erro", "Digite um ID válido!")
         return
 
     for f in funcionarios:
         if f["id"] == id_func:
-            entrada = input("Digite o horário de entrada: ")
-
-            registro = {
-                "entrada": entrada,
-                "saida": ""
-            }
-
+            registro = {"entrada": "Agora", "saida": ""}
             f["pontos"].append(registro)
-            print("Entrada registrada!\n")
+            messagebox.showinfo("Sucesso", "Entrada registrada!")
             return
 
-    print("Funcionário não encontrado.\n")
+    messagebox.showerror("Erro", "Funcionário não encontrado!")
 
 
 # Função para registrar saída
-def registrar_saida():
+def saida():
     try:
-        id_func = int(input("Digite o ID do funcionário: "))
-    except ValueError:
-        print("Erro: Digite apenas números inteiros!\n")
+        id_func = int(entry_id.get())
+    except:
+        messagebox.showerror("Erro", "Digite um ID válido!")
         return
 
     for f in funcionarios:
         if f["id"] == id_func:
             if len(f["pontos"]) == 0:
-                print("Nenhuma entrada registrada.\n")
+                messagebox.showerror("Erro", "Sem entrada registrada!")
                 return
 
-            saida = input("Digite o horário de saída: ")
-            f["pontos"][-1]["saida"] = saida
-
-            print("Saída registrada!\n")
+            f["pontos"][-1]["saida"] = "Agora"
+            messagebox.showinfo("Sucesso", "Saída registrada!")
             return
 
-    print("Funcionário não encontrado.\n")
+    messagebox.showerror("Erro", "Funcionário não encontrado!")
 
 
 # Função para mostrar histórico
-def mostrar_historico():
-    id_func = int(input("Digite o ID do funcionário: "))
+def historico():
+    try:
+        id_func = int(entry_id.get())
+    except:
+        messagebox.showerror("Erro", "Digite um ID válido!")
+        return
 
     for f in funcionarios:
         if f["id"] == id_func:
-            print(f"\nHistórico de {f['nome']}:")
+            texto.delete(1.0, tk.END)
+            texto.insert(tk.END, f"Histórico de {f['nome']}:\n")
 
             for p in f["pontos"]:
-                print(f"Entrada: {p['entrada']} | Saída: {p['saida']}")
+                texto.insert(tk.END, f"Entrada: {p['entrada']} | Saída: {p['saida']}\n")
 
-            print()
             return
 
-    print("Funcionário não encontrado.\n")
+    messagebox.showerror("Erro", "Funcionário não encontrado!")
 
 
-# MENU PRINCIPAL
-while True:
-    print("=== SISTEMA DE PONTO ===")
-    print("1 - Cadastrar funcionário")
-    print("2 - Listar funcionários")
-    print("3 - Registrar entrada")
-    print("4 - Registrar saída")
-    print("5 - Ver histórico")
-    print("0 - Sair")
+# ===== INTERFACE =====
+janela = tk.Tk()
+janela.title("Sistema de Ponto")
 
-    opcao = input("Escolha uma opção: ")
+# Nome
+tk.Label(janela, text="Nome:").pack()
+entry_nome = tk.Entry(janela)
+entry_nome.pack()
 
-    if opcao == "1":
-        cadastrar_funcionario()
-    elif opcao == "2":
-        listar_funcionarios()
-    elif opcao == "3":
-        registrar_entrada()
-    elif opcao == "4":
-        registrar_saida()
-    elif opcao == "5":
-        mostrar_historico()
-    elif opcao == "0":
-        print("Encerrando sistema...")
-        break
-    else:
-        print("Opção inválida.\n")
+tk.Button(janela, text="Cadastrar Funcionário", command=cadastrar).pack(pady=5)
+
+# ID
+tk.Label(janela, text="ID do Funcionário:").pack()
+entry_id = tk.Entry(janela)
+entry_id.pack()
+
+# Botões
+tk.Button(janela, text="Registrar Entrada", command=entrada).pack(pady=2)
+tk.Button(janela, text="Registrar Saída", command=saida).pack(pady=2)
+tk.Button(janela, text="Ver Histórico", command=historico).pack(pady=5)
+
+# Área de texto
+texto = tk.Text(janela, height=10, width=40)
+texto.pack()
+
+janela.mainloop()
