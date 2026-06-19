@@ -52,7 +52,7 @@ def registrar_entrada():
 
 # Função para registrar saída
 def registrar_saida():
-        try:
+    try:
         id_func = int(input("Digite o ID do funcionário: "))
     except ValueError:
         print("Erro: Digite apenas números inteiros!\n")
