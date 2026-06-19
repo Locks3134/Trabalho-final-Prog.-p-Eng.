@@ -28,7 +28,11 @@ def listar_funcionarios():
 
 # Função para registrar entrada
 def registrar_entrada():
-    id_func = int(input("Digite o ID do funcionário: "))
+    try:
+        id_func = int(input("Digite o ID do funcionário: "))
+    except ValueError:
+        print("Erro: Digite apenas números inteiros!\n")
+        return
 
     for f in funcionarios:
         if f["id"] == id_func:
