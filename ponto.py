@@ -24,6 +24,7 @@ def cadastrar():
     funcionarios.append(funcionario)
     messagebox.showinfo("Sucesso", f"{nome} cadastrado com ID {id_func}")
     entry_nome.delete(0, tk.END)
+    lista_funcionarios.insert(tk.END, f"{id_func} - {nome}")
 
 
 # Função para registrar entrada
@@ -96,66 +97,128 @@ def historico():
 # ===== INTERFACE =====
 janela = tk.Tk()
 janela.title("Sistema de Ponto")
-janela.configure(bg="#f0f0f0")
+janela.geometry("800x600")
+janela.configure(bg="#1e1e1e")  # fundo escuro
+
+# 3 colunas (centro fixo)
+janela.grid_columnconfigure(0, weight=1)
+janela.grid_columnconfigure(1, weight=0)
+janela.grid_columnconfigure(2, weight=1)
+janela.grid_columnconfigure(3, weight=1)
+
+janela.resizable(True, True)
 
 # Título
 tk.Label(
     janela,
     text="Sistema de Ponto",
     font=("Arial", 16, "bold"),
-    bg="#f0f0f0"
-).grid(row=0, column=0, columnspan=2, pady=10)
+    bg="#1e1e1e",
+    fg="white"
+).grid(row=0, column=1, pady=15)
 
 # Nome
-tk.Label(janela, text="Nome:", bg="#f0f0f0").grid(row=1, column=0, padx=10, pady=5, sticky="e")
-entry_nome = tk.Entry(janela, width=25)
-entry_nome.grid(row=1, column=1, padx=10, pady=5)
+tk.Label(
+    janela,
+    text="Nome:",
+    bg="#1e1e1e",
+    fg="white"
+).grid(row=1, column=1, pady=5)
+
+entry_nome = tk.Entry(
+    janela,
+    width=25,
+    bg="#2c2c2c",
+    fg="white",
+    insertbackground="white"  # cor do cursor
+)
+entry_nome.grid(row=2, column=1, pady=5)
 
 # Botão cadastrar
 tk.Button(
     janela,
     text="Cadastrar Funcionário",
     command=cadastrar,
-    bg="#4CAF50",
+    bg="#27ae60",
     fg="white",
     width=25
-).grid(row=2, column=0, columnspan=2, pady=10)
+).grid(row=3, column=1, pady=10)
+
+
+# Título da lista lateral
+tk.Label(
+    janela,
+    text="Funcionários",
+    bg="#1e1e1e",
+    fg="white",
+    font=("Arial", 12, "bold")
+).grid(row=1, column=3, pady=5)
+
+# Lista de funcionários
+lista_funcionarios = tk.Listbox(
+    janela,
+    width=25,
+    height=15,
+    bg="#2c2c2c",
+    fg="white"
+)
+lista_funcionarios.grid(row=2, column=3, rowspan=6, padx=10, pady=10)
+
 
 # ID
-tk.Label(janela, text="ID do Funcionário:", bg="#f0f0f0").grid(row=3, column=0, padx=10, pady=5, sticky="e")
-entry_id = tk.Entry(janela, width=25)
-entry_id.grid(row=3, column=1, padx=10, pady=5)
+tk.Label(
+    janela,
+    text="ID do Funcionário:",
+    bg="#1e1e1e",
+    fg="white"
+).grid(row=4, column=1, pady=5)
+
+entry_id = tk.Entry(
+    janela,
+    width=25,
+    bg="#2c2c2c",
+    fg="white",
+    insertbackground="white"
+)
+entry_id.grid(row=5, column=1, pady=5)
 
 # Botões de ação
 tk.Button(
     janela,
     text="Registrar Entrada",
     command=entrada,
-    bg="#2196F3",
+    bg="#3498db",
     fg="white",
     width=25
-).grid(row=4, column=0, columnspan=2, pady=3)
+).grid(row=6, column=1, pady=3)
 
 tk.Button(
     janela,
     text="Registrar Saída",
     command=saida,
-    bg="#f44336",
+    bg="#e74c3c",
     fg="white",
     width=25
-).grid(row=5, column=0, columnspan=2, pady=3)
+).grid(row=7, column=1, pady=3)
 
 tk.Button(
     janela,
     text="Ver Histórico",
     command=historico,
-    bg="#9C27B0",
+    bg="#9b59b6",
     fg="white",
     width=25
-).grid(row=6, column=0, columnspan=2, pady=10)
+).grid(row=8, column=1, pady=10)
 
 # Área de texto
-texto = tk.Text(janela, height=10, width=45)
-texto.grid(row=7, column=0, columnspan=2, padx=10, pady=10)
+texto = tk.Text(
+    janela,
+    height=10,
+    width=60,
+    bg="#2c2c2c",
+    fg="white",
+    insertbackground="white"
+)
+texto.grid(row=9, column=1, pady=10)
 
 janela.mainloop()
