@@ -145,6 +145,25 @@ def historico():
 
     messagebox.showerror("Erro", "Funcionário não encontrado!")
 
+#=========================
+# FUNÇÃO: SELECIONAR FUNCIONÁRIO DA LISTA
+#=========================
+def selecionar_funcionario(event):
+    try:
+        # Pega o item selecionado na lista
+        selecao = lista_funcionarios.get(lista_funcionarios.curselection())
+
+        # Extrai o ID (parte antes do "-")
+        id_func = selecao.split(" - ")[0]
+
+        # Limpa o campo de ID
+        entry_id.delete(0, tk.END)
+
+        # Insere o ID automaticamente
+        entry_id.insert(0, id_func)
+
+    except:
+        pass  # evita erro se nada estiver selecionado
 
 # =========================
 # INTERFACE GRÁFICA
@@ -238,7 +257,7 @@ lista_funcionarios = tk.Listbox(
     fg="white"
 )
 lista_funcionarios.grid(row=2, column=3, rowspan=6, padx=10, pady=10)
-
+lista_funcionarios.bind("<<ListboxSelect>>", selecionar_funcionario)
 
 # =========================
 # CAMPO ID
